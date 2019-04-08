@@ -49,24 +49,29 @@ public class DemoServlet extends HttpServlet {
 			InputStream in = new BufferedInputStream (new FileInputStream(new File(path.getPath() + "config/demodb.properties")));
 			prop.load(in);
 			dbUser = prop.getProperty("MYSQL_USER");//"root";
-			dbPassword = prop.getProperty("MYSQL_PASSWORD");//"123456";
+			dbPassword = prop.getProperty("MYSQL_ROOT_PASSWORD");//"123456";
 			dbAddr = prop.getProperty("MYSQL_ADDR");//"miaoyun-demo-db-svc";
 			dbPort = prop.getProperty("MYSQL_PORT");//"3306";
-//			Map<String,String> map = System.getenv();
-//			for (Iterator<String> it = map.keySet().iterator(); it.hasNext();) {
-//				String key = it.next();
-//				System.out.println("get env key : " + key);
-//				System.out.println("get env value : " + map.get(key));
-//				if (key.equals("MYSQL_ADDR")) {
-//					dbAddr = map.get(key);
-//					System.out.println("get dbAddr : " + dbAddr);
-//				}
-//
-//				if (key.equals("MYSQL_PORT")) {
-//					dbPort = map.get(key);
-//					System.out.println("get dbPort : " + dbPort);
-//				}
-//			}
+			Map<String,String> map = System.getenv();
+			for (Iterator<String> it = map.keySet().iterator(); it.hasNext();) {
+				String key = it.next();
+				System.out.println("get env key : " + key);
+				System.out.println("get env value : " + map.get(key));
+				// if (key.equals("MYSQL_ADDR")) {
+				// 	dbAddr = map.get(key);
+				// 	System.out.println("get dbAddr : " + dbAddr);
+				// }
+
+				// if (key.equals("MYSQL_PORT")) {
+				// 	dbPort = map.get(key);
+				// 	System.out.println("get dbPort : " + dbPort);
+				// }
+
+				if (key.equals("MYSQL_ROOT_PASSWORD")) {
+					dbPassword = map.get(key);
+					System.out.println("get dbPassword : " + dbPassword);
+				}
+			}
 			dbName = prop.getProperty("MYSQL_NAME");//"demo";
 
 			in.close();
