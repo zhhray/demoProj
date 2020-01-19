@@ -84,23 +84,11 @@ public class DemoServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		System.out.println("into Servlet!!");
-		System.out.println(System.getProperty("user.dir"));
-//		Properties prop = new Properties();
-//		//读取属性文件a.properties
-//		//InputStream in = new BufferedInputStream (new FileInputStream(new File("D:\\workspace\\demoProj\\config\\demodb.properties")));
-//		URL path = this.getClass().getClassLoader().getResource("/");
-//		InputStream in = new BufferedInputStream (new FileInputStream(new File(path.getPath() + "config/demodb.properties")));
-//		prop.load(in);
-//		String dbUser = prop.getProperty("MYSQL_USER");//"root";
-//		String dbPassword = prop.getProperty("MYSQL_PASSWORD");//"123456";
-//		String dbAddr = prop.getProperty("MYSQL_ADDR");//"127.0.0.1:3306";
-//		String dbName = prop.getProperty("MYSQL_NAME");//"demo";
-//
-//		in.close();
 		
 		try {
-			Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://" + dbAddr  + ":" + dbPort + "/" + dbName + "?user=" + dbUser + "&password=" + dbPassword);// localhost:主机名，端口号；Garbage:数据库database；Mysql帐户、密码
+			String mysqlDriver = "jdbc:mysql://" + dbAddr  + ":" + dbPort + "/" + dbName + "?user=" + dbUser + "&password=" + dbPassword;
+			System.out.println("Mysql driver : " + mysqlDriver);
+			Connection conn = DriverManager.getConnection(mysqlDriver);// localhost:主机名，端口号；Garbage:数据库database；Mysql帐户、密码
 			// 获取支持sql的statement
 			Statement st = conn.createStatement();
 			// 根据写的sql语句查询结果到ResultSet集合中去
@@ -119,14 +107,15 @@ public class DemoServlet extends HttpServlet {
 					+ "<tr><td>Database Address</td>"
 					+ "<td>" + dbAddr + "</td>"
 					+ "</tr></table><br>");
-			pw.println("<table><tr>"
-					+ "<td>No.</td>"
+			pw.println("<div class='show'>");
+			pw.println("<table><thead><tr>"
+					+ "<th>ID</th>"
 //					+ "<td>Birth Date</td>"
-					+ "<td>Host</td>"
-					+ "<td>Name</td>"
+					+ "<th>Host</th>"
+					+ "<th>Name</th>"
 //					+ "<td>Gender</td>"
 //					+ "<td>Hire Date</td>"
-					+ "</tr>");
+					+ "</tr></thead>");
 			while (set.next()) {
 				int empNo = set.getInt(1);
 				number = empNo;
@@ -145,6 +134,7 @@ public class DemoServlet extends HttpServlet {
 						+ "<tr>");
 			}
 			pw.println("</table>");
+			pw.println("</div>");
 			pw.close();
 			set.close();
 			st.close();
@@ -160,8 +150,8 @@ public class DemoServlet extends HttpServlet {
 
             InetAddress netAddress = getInetAddress();
             String hostname = getHostName(netAddress);
-			Connection conn = DriverManager.getConnection(
-					"jdbc:mysql://" + dbAddr  + ":" + dbPort + "/" + dbName + "?user=" + dbUser + "&password=" + dbPassword);// localhost:主机名，端口号；Garbage:数据库database；Mysql帐户、密码
+            String mysqlDriver = "jdbc:mysql://" + dbAddr  + ":" + dbPort + "/" + dbName + "?user=" + dbUser + "&password=" + dbPassword;
+			Connection conn = DriverManager.getConnection(mysqlDriver);// localhost:主机名，端口号；Garbage:数据库database；Mysql帐户、密码
 			Statement stmt = conn.createStatement();
 			String username = request.getParameter("username");
 			System.out.println("get username : " + username);

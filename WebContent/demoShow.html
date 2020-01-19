@@ -22,16 +22,30 @@ body {
 	left: 50%;
 	transform: translate(-50%,-50%);
 }
-span {
+#content {
 	text-align:left;
 	display: block;
 	color: #ffffff;
 	font-family: helvetica;
 }
 
-span > table {
-    border-spacing: 30px 5px;
+/* 滚动槽 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
+::-webkit-scrollbar-track {
+    border-radius: 3px;
+    background: rgba(0,0,0,0.06);
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: rgba(0,0,0,0.12);
+    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+}
+
 
 </style>
 <body>
@@ -53,15 +67,40 @@ span > table {
 		    </g>
 		</svg>
 		<br><br>
-		<span id="content"></span>
+		<div id="content"></div>
 		<br><br>
 		<span>
-			Name: <input type="text" id="name"/> <button type="button" onclick="addUser()">Add</button>
+			Name: <input type="text" id="name"/> <button type="button" onclick="addUser()">添加</button>
 		</span>
 	</div>
 	<script type="text/javascript">
+	var tableCss = {
+		'bord er-spacing': '0px 5px',
+		'display': 'table',
+		'padding-top': '30px',
+	};
+	
+    var tbodyCss = {
+    	'display': 'table-row-group'
+    };
+    
+    var thtdCss = {
+		'padding': '0px 20px'
+    };
+    
+    var _height = ($(window).height() - 280) > 300 ? 300 : ($(window).height() - 280);
+    var showCss = {
+    	'overflow-y': 'auto',
+    	'max-height': _height + 'px',
+    };
+	
 	$.get("/demoProj/servlet/DemoServlet", function(response){
 		$('#content').html(response.toString());
+		
+		$('#content').find('table').css(tableCss);
+		$('#content').find('table>tbody').css(tbodyCss);
+		$('#content').find('table').find('th,td').css(thtdCss);
+		$('#content').find('.show').css(showCss);
 	});
 
 	function addUser() {
